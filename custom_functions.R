@@ -1,3 +1,4 @@
+# preferred plotting theme in ggplot
 library(ggplot2)
 plotTheme <- function (plot){
   plot +
@@ -14,4 +15,16 @@ plotTheme <- function (plot){
     theme(plot.background = element_blank(),panel.grid.major = element_blank(),
           panel.grid.minor = element_blank())
 }
-h<-1
+
+# extract coefficients from fitted glmnet object into matrix
+extractcoefs_glmnet = function(fit){
+  which <- nonzeroCoef(fit$beta)
+  nwhich <- length(which)
+  df <- as.data.frame(as.matrix(fit$beta[which, , drop = FALSE]))
+  names(df) <- prettyNum(log(fit[["lambda"]]), digits = 4)
+  df[,ncol(df)+1] <- rownames(df)
+  df.r <- melt(df)
+  names(df.r) <- c("iv", "lambda_log", "beta")
+  df.r$lambda_log <- as.numeric(as.character(df.r$lambda_log))
+  df.r
+}
