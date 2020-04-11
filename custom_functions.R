@@ -1,5 +1,6 @@
 # preferred plotting theme in ggplot
-library(ggplot2)
+library(tidyverse)
+library(bestNormalize)
 plotTheme <- function (plot){
   plot +
     theme(panel.background = element_rect(fill = "black")) +
@@ -27,4 +28,17 @@ extractcoefs_glmnet = function(fit){
   names(df.r) <- c("iv", "lambda_log", "beta")
   df.r$lambda_log <- as.numeric(as.character(df.r$lambda_log))
   df.r
+}
+
+showcase_qt <- function(){
+  tbl <- tibble(id = 1:1000, 
+                y = rgamma(1000, 1, .01)
+  )
+  m_qt <- orderNorm(tbl$y)
+  tbl$y_normal <- predict(m_qt)
+  tbl %>%
+    gather(variable, value, -id) %>%
+    ggplot(aes(value, fill = variable)) +
+    geom_histogram() +
+    facet_wrap(~ variable, scales = "free")
 }
