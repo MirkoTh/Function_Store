@@ -9,7 +9,7 @@ create_folder_structure <- function(){
 }
 
 get_href <- function(nm){
-  first <- str_c("    ", "- text: ", '"', nm, '.Rmd"\n',
+  first <- str_c("    ", "- text: ", '"', nm, '"\n',
                  "      href: ", nm, ".html")
 }
 
